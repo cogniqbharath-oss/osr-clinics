@@ -81,6 +81,7 @@ class OSRHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
 if __name__ == '__main__':
+    socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", PORT), OSRHandler) as httpd:
         print(f"OSR Clinics website running at http://localhost:{PORT}")
         print(f"Chatbot API available at http://localhost:{PORT}/api/chat")

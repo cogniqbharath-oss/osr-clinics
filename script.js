@@ -4,13 +4,13 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (currentScroll > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-    
+
     lastScroll = currentScroll;
 });
 
@@ -38,7 +38,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     top: offsetTop,
                     behavior: 'smooth'
                 });
-                
+
                 // Close mobile menu if open
                 navMenu.classList.remove('active');
                 const icon = mobileToggle.querySelector('i');
@@ -71,17 +71,17 @@ document.querySelectorAll('[data-aos]').forEach(el => {
 const contactForm = document.getElementById('contactForm');
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     // Get form values
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
     const service = document.getElementById('service').value;
     const message = document.getElementById('message').value;
-    
+
     // Show success message
     alert(`Thank you, ${name}! We've received your message and will contact you shortly at ${email || phone}.`);
-    
+
     // Reset form
     contactForm.reset();
 });
@@ -92,9 +92,15 @@ const chatbot = document.getElementById('chatbot');
 const chatbotClose = document.querySelector('.chatbot-close');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
+const voiceBtn = document.getElementById('voiceBtn'); // Voice button
 const chatMessages = document.getElementById('chatMessages');
 
 let conversationHistory = [];
+// Voice Assistant Variables
+let speechRecognition;
+let isListening = false;
+let synth = window.speechSynthesis;
+let voiceEnabled = false; // User must activate voice manually first
 
 // Toggle chatbot
 chatbotTrigger.addEventListener('click', () => {
@@ -112,14 +118,14 @@ chatbotClose.addEventListener('click', () => {
 function addMessage(text, isUser = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-    
+
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     contentDiv.innerHTML = `<p>${text}</p>`;
-    
+
     messageDiv.appendChild(contentDiv);
     chatMessages.appendChild(messageDiv);
-    
+
     // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -138,18 +144,18 @@ function showTypingIndicator() {
 async function handleChatMessage() {
     const message = chatInput.value.trim();
     if (!message) return;
-    
+
     // Add user message
     addMessage(message, true);
     conversationHistory.push({ role: 'user', content: message });
     chatInput.value = '';
-    
+
     // Show typing indicator
     const typingIndicator = showTypingIndicator();
-    
+
     try {
         // Send to API
-        const response = await fetch('/api/chat', {
+        const response = await fetch('https://old-block-0623.cogniq-bharath.workers.dev/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -158,22 +164,120 @@ async function handleChatMessage() {
                 messages: conversationHistory
             })
         });
-        
+
         const data = await response.json();
-        
+
         // Remove typing indicator
         typingIndicator.remove();
-        
+
         // Add bot response
         const botMessage = data.response || "I apologize, but I'm having trouble connecting right now. Please call us at (519) 419-1484 or book online at osrclinics.com/book";
         addMessage(botMessage);
         conversationHistory.push({ role: 'assistant', content: botMessage });
-        
+
+        // Speak response if voice was enabled
+        if (voiceEnabled) {
+            speak(botMessage);
+        }
+
     } catch (error) {
         console.error('Chat error:', error);
         typingIndicator.remove();
         addMessage("I'm having trouble connecting. Please call us at (519) 419-1484 for immediate assistance, or book online at osrclinics.com/book");
+        speak("I'm having trouble connecting. Please call us for assistance.");
     }
+}
+
+// === Voice Assistant Implementation ===
+
+// Initialize Speech Recognition
+function initSpeechRecognition() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        speechRecognition = new SpeechRecognition();
+        speechRecognition.continuous = false;
+        speechRecognition.interimResults = false;
+        speechRecognition.lang = 'en-US';
+
+        speechRecognition.onstart = () => {
+            isListening = true;
+            voiceBtn.classList.add('listening');
+            voiceBtn.innerHTML = '<i class="fas fa-wave-square"></i>';
+        };
+
+        speechRecognition.onend = () => {
+            isListening = false;
+            voiceBtn.classList.remove('listening');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            // Auto-send if we captured speech
+            if (chatInput.value.trim().length > 0) {
+                handleChatMessage();
+            }
+        };
+
+        speechRecognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            chatInput.value = transcript;
+        };
+
+        speechRecognition.onerror = (event) => {
+            console.error('Speech recognition error', event.error);
+            isListening = false;
+            voiceBtn.classList.remove('listening');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        };
+    } else {
+        voiceBtn.style.display = 'none'; // Hide if not supported
+        console.log('Web Speech API not supported in this browser.');
+    }
+}
+
+// Text-to-Speech Function
+function speak(text) {
+    if (!synth) return;
+
+    // Stop any current speech
+    synth.cancel();
+
+    // Create utterance
+    // Strip URLs and simple formatting for cleaner speech
+    const cleanText = text.replace(/(?:https?|ftp):\/\/[\n\S]+/g, 'our website').replace(/[*#]/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+
+    // Select a pleasant voice if available
+    const voices = synth.getVoices();
+    const preferredVoice = voices.find(voice => voice.name.includes('Female') || voice.name.includes('Google US English'));
+    if (preferredVoice) {
+        utterance.voice = preferredVoice;
+    }
+
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    synth.speak(utterance);
+}
+
+// Toggle Voice Input
+if (voiceBtn) {
+    initSpeechRecognition();
+
+    voiceBtn.addEventListener('click', () => {
+        if (!speechRecognition) {
+            alert("Voice input is not supported in this browser. Please use Chrome or Edge.");
+            return;
+        }
+
+        if (isListening) {
+            speechRecognition.stop();
+        } else {
+            conversationHistory = []; // Optional: reset context on new voice session? or keep it.
+            // Keeping context is better.
+            speechRecognition.start();
+            voiceEnabled = true; // Enable speech output once user interacts with voice
+        }
+
+        chatInput.focus();
+    });
 }
 
 // Send message on button click
@@ -200,33 +304,33 @@ function addQuickResponses() {
     const chipsContainer = document.createElement('div');
     chipsContainer.className = 'quick-responses';
     chipsContainer.style.cssText = 'display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 1rem; border-top: 1px solid var(--border);';
-    
+
     quickResponses.forEach(response => {
         const chip = document.createElement('button');
         chip.textContent = response;
         chip.style.cssText = 'background: var(--bg-light); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.875rem; cursor: pointer; transition: var(--transition);';
-        
+
         chip.addEventListener('click', () => {
             chatInput.value = response;
             handleChatMessage();
             chipsContainer.remove();
         });
-        
+
         chip.addEventListener('mouseenter', () => {
             chip.style.background = 'var(--primary)';
             chip.style.color = 'white';
             chip.style.borderColor = 'var(--primary)';
         });
-        
+
         chip.addEventListener('mouseleave', () => {
             chip.style.background = 'var(--bg-light)';
             chip.style.color = 'var(--text-dark)';
             chip.style.borderColor = 'var(--border)';
         });
-        
+
         chipsContainer.appendChild(chip);
     });
-    
+
     chatMessages.appendChild(chipsContainer);
 }
 

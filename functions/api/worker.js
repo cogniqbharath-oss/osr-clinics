@@ -18,7 +18,7 @@ export default {
         try {
             const { messages } = await request.json();
             const apiKey = env.API_KEY_Osr;
-            const model = "gemini-2.0-flash-exp";
+            const model = "gemma-3-27b-it";
 
             // Comprehensive system prompt for OSR Clinics
             const systemPrompt = `You are a compassionate, professional AI assistant for OSR Clinics, a multi-location mental health practice in Ontario, Canada.
@@ -61,9 +61,14 @@ YOUR ROLE:
 - NEVER provide medical advice or diagnoses
 - Redirect urgent mental health crises to emergency services (911) or crisis lines
 
-TONE: Compassionate, professional, supportive, non-judgmental, encouraging
+TONE: Compassionate, professional, supportive, non-judgmental, encouraging.
 
-If asked about appointments, always mention the free initial consultation and provide the booking link: https://www.osrclinics.com/book`;
+IMPORTANT FORMATTING RULES:
+- Keep answers SHORT, NEAT, and CONCISE.
+- Use bullet points for lists.
+- Avoid long paragraphs.
+- Be direct but warm.
+- If asked about appointments, provide the link: https://www.osrclinics.com/book`;
 
             const response = await fetch(
                 `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
