@@ -17,8 +17,8 @@ export default {
 
         try {
             const { messages } = await request.json();
-            const apiKey = env.GEMINI_API_KEY;
-            const model = "gemini-1.5-flash";
+            const apiKey = env.API_KEY_Osr;
+            const model = "gemini-2.0-flash-exp";
 
             // Comprehensive system prompt for OSR Clinics
             const systemPrompt = `You are a compassionate, professional AI assistant for OSR Clinics, a multi-location mental health practice in Ontario, Canada.
