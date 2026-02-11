@@ -244,11 +244,15 @@ function speak(text) {
     const cleanText = text.replace(/(?:https?|ftp):\/\/[\n\S]+/g, 'our website').replace(/[*#]/g, '');
     const utterance = new SpeechSynthesisUtterance(cleanText);
 
-    // Select a pleasant voice if available
+    // Select a male voice if available
     const voices = synth.getVoices();
-    const preferredVoice = voices.find(voice => voice.name.includes('Female') || voice.name.includes('Google US English'));
+    // Prioritize "Male" voices, specifically Google US English Male if possible
+    const preferredVoice = voices.find(voice => voice.name.includes('Male') || voice.name.includes('David') || voice.name.includes('Guy')) || voices[0];
+
     if (preferredVoice) {
         utterance.voice = preferredVoice;
+        // Lower pitch slightly for a more masculine tone if needed, but default is usually fine
+        utterance.pitch = 0.9;
     }
 
     utterance.rate = 1;
