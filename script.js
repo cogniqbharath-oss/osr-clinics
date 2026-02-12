@@ -101,6 +101,7 @@ let speechRecognition;
 let isListening = false;
 let synth = window.speechSynthesis;
 let voiceEnabled = false; // User must activate voice manually first
+let autoListen = false; // Hands-free mode flag
 
 // Toggle chatbot
 chatbotTrigger.addEventListener('click', () => {
@@ -224,6 +225,12 @@ function initSpeechRecognition() {
             console.error('Speech recognition error', event.error);
             isListening = false;
             voiceBtn.classList.remove('listening');
+
+            // If it's a no-speech error in hands-free mode
+            if (event.error === 'no-speech' && autoListen) {
+                autoListen = false;
+                voiceBtn.classList.remove('active-mode');
+            }
             voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
         };
     } else {
@@ -258,6 +265,22 @@ function speak(text) {
     utterance.rate = 1;
     utterance.pitch = 1;
 
+    // Hands-free logic: Listen after speaking
+    utterance.onend = () => {
+        if (autoListen) {
+            // Short delay before listening again
+            setTimeout(() => {
+                if (!isListening && speechRecognition) {
+                    try {
+                        speechRecognition.start();
+                    } catch (e) {
+                        console.error("Could not restart recognition:", e);
+                    }
+                }
+            }, 500);
+        }
+    };
+
     synth.speak(utterance);
 }
 
@@ -271,13 +294,23 @@ if (voiceBtn) {
             return;
         }
 
-        if (isListening) {
+        if (isListening || autoListen) {
+            // Stop everything
             speechRecognition.stop();
+            autoListen = false;
+            voiceBtn.classList.remove('active-mode');
+            synth.cancel(); // Stop speaking if currently speaking
         } else {
-            conversationHistory = []; // Optional: reset context on new voice session? or keep it.
-            // Keeping context is better.
-            speechRecognition.start();
-            voiceEnabled = true; // Enable speech output once user interacts with voice
+            conversationHistory = [];
+            autoListen = true; // Enable hands-free mode
+            voiceEnabled = true;
+            voiceBtn.classList.add('active-mode');
+
+            try {
+                speechRecognition.start();
+            } catch (e) {
+                console.error("Start error:", e);
+            }
         }
 
         chatInput.focus();

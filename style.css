@@ -907,6 +907,12 @@ footer {
     background: var(--border) !important;
 }
 
+.voice-btn.active-mode {
+    background: var(--bg-light) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 2px rgba(44, 122, 123, 0.3);
+}
+
 .voice-btn.listening {
     background: #e53e3e !important;
     color: white !important;
