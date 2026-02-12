@@ -1008,15 +1008,16 @@ footer {
 }
 
 .message {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     display: flex;
 }
 
 .message-content {
-    max-width: 80%;
-    padding: 0.875rem 1.125rem;
+    max-width: 75%;
+    padding: 0.6rem 1rem;
     border-radius: 12px;
-    line-height: 1.5;
+    line-height: 1.4;
+    font-size: 0.9rem;
 }
 
 .bot-message .message-content {
