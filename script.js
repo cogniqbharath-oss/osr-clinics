@@ -88,11 +88,11 @@ contactForm.addEventListener('submit', (e) => {
 
 // Chatbot functionality
 const chatbotTrigger = document.getElementById('chatbotTrigger');
+const voiceAssistantTrigger = document.getElementById('voiceAssistantTrigger');
 const chatbot = document.getElementById('chatbot');
 const chatbotClose = document.querySelector('.chatbot-close');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
-const voiceBtn = document.getElementById('voiceBtn'); // Voice button
 const chatMessages = document.getElementById('chatMessages');
 
 let conversationHistory = [];
@@ -202,14 +202,16 @@ function initSpeechRecognition() {
 
         speechRecognition.onstart = () => {
             isListening = true;
-            voiceBtn.classList.add('listening');
-            voiceBtn.innerHTML = '<i class="fas fa-wave-square"></i>';
+            voiceAssistantTrigger.classList.add('active-mode');
+            voiceAssistantTrigger.innerHTML = '<i class="fas fa-wave-square"></i>';
         };
 
         speechRecognition.onend = () => {
             isListening = false;
-            voiceBtn.classList.remove('listening');
-            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            if (!autoListen) {
+                voiceAssistantTrigger.classList.remove('active-mode');
+                voiceAssistantTrigger.innerHTML = '<i class="fas fa-microphone"></i>';
+            }
             // Auto-send if we captured speech
             if (chatInput.value.trim().length > 0) {
                 handleChatMessage();
@@ -224,17 +226,16 @@ function initSpeechRecognition() {
         speechRecognition.onerror = (event) => {
             console.error('Speech recognition error', event.error);
             isListening = false;
-            voiceBtn.classList.remove('listening');
+            voiceAssistantTrigger.classList.remove('active-mode');
+            voiceAssistantTrigger.innerHTML = '<i class="fas fa-microphone"></i>';
 
             // If it's a no-speech error in hands-free mode
             if (event.error === 'no-speech' && autoListen) {
                 autoListen = false;
-                voiceBtn.classList.remove('active-mode');
             }
-            voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
         };
     } else {
-        voiceBtn.style.display = 'none'; // Hide if not supported
+        voiceAssistantTrigger.style.display = 'none'; // Hide if not supported
         console.log('Web Speech API not supported in this browser.');
     }
 }
@@ -285,10 +286,10 @@ function speak(text) {
 }
 
 // Toggle Voice Input
-if (voiceBtn) {
+if (voiceAssistantTrigger) {
     initSpeechRecognition();
 
-    voiceBtn.addEventListener('click', () => {
+    voiceAssistantTrigger.addEventListener('click', () => {
         if (!speechRecognition) {
             alert("Voice input is not supported in this browser. Please use Chrome or Edge.");
             return;
@@ -298,13 +299,18 @@ if (voiceBtn) {
             // Stop everything
             speechRecognition.stop();
             autoListen = false;
-            voiceBtn.classList.remove('active-mode');
+            voiceAssistantTrigger.classList.remove('active-mode');
+            voiceAssistantTrigger.innerHTML = '<i class="fas fa-microphone"></i>';
             synth.cancel(); // Stop speaking if currently speaking
         } else {
+            // Start Voice Mode
             conversationHistory = [];
             autoListen = true; // Enable hands-free mode
             voiceEnabled = true;
-            voiceBtn.classList.add('active-mode');
+
+            // Ensure chatbot is open
+            chatbot.classList.add('active');
+            chatbotTrigger.style.display = 'none';
 
             try {
                 speechRecognition.start();

@@ -15,7 +15,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/jpeg" href="assets/osr_favicon.jpg">
 </head>
 
 <body>
@@ -464,7 +464,12 @@
                     <span class="status-online">Online</span>
                 </div>
             </div>
-            <button class="chatbot-close"><i class="fas fa-times"></i></button>
+            <div class="chatbot-header-actions">
+                <button class="voice-assistant-trigger" id="voiceAssistantTrigger" title="Toggle Voice Mode">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="chatbot-close"><i class="fas fa-times"></i></button>
+            </div>
         </div>
         <div class="chatbot-messages" id="chatMessages">
             <div class="message bot-message">
@@ -476,15 +481,16 @@
         </div>
         <div class="chatbot-input">
             <input type="text" id="chatInput" placeholder="Type your message...">
-            <button id="voiceBtn" class="voice-btn"><i class="fas fa-microphone"></i></button>
             <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <button class="chatbot-trigger" id="chatbotTrigger">
-        <i class="fas fa-comment-medical"></i>
-        <span class="chat-badge">Chat with us</span>
-    </button>
+    <div class="chatbot-triggers">
+        <button class="chatbot-trigger" id="chatbotTrigger">
+            <i class="fas fa-comment-medical"></i>
+            <span class="chat-badge">Chat with us</span>
+        </button>
+    </div>
 
     <script src="script.js"></script>
 </body>
