@@ -1,8 +1,8 @@
 :root {
-    --primary: #2C7A7B;
-    --primary-dark: #234E52;
-    --primary-light: #4FD1C5;
-    --accent: #38B2AC;
+    --primary: #116dff;
+    --primary-dark: #0f2ccf;
+    --primary-light: #597dff;
+    --accent: #2f5dff;
     --text-dark: #1A202C;
     --text-light: #4A5568;
     --bg-light: #F7FAFC;
@@ -10,7 +10,7 @@
     --border: #E2E8F0;
     --success: #48BB78;
     --warning: #ED8936;
-    --gradient: linear-gradient(135deg, #2C7A7B 0%, #38B2AC 100%);
+    --gradient: linear-gradient(135deg, #116dff 0%, #2f5dff 100%);
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
