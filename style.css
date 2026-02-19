@@ -1,21 +1,19 @@
 :root {
-    --primary: #0c0537;
-    --primary-dark: #06031a;
-    --primary-light: #1a116d;
-    --accent: #1e155e;
-    --text-dark: #1A202C;
-    --text-light: #4A5568;
-    --bg-light: #F7FAFC;
+    --primary: #116dff;
+    --primary-dark: #0f2ccf;
+    --primary-light: #597dff;
+    --accent: #2f5dff;
+    --text-dark: #080808;
+    --text-light: #5d5d61;
+    --bg-light: #f5f7ff;
     --bg-white: #FFFFFF;
     --border: #E2E8F0;
     --success: #48BB78;
-    --warning: #ED8936;
-    --gradient: linear-gradient(135deg, #0c0537 0%, #1a116d 100%);
+    --warning: #df3131;
+    --gradient: linear-gradient(135deg, #116dff 0%, #2f5dff 100%);
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
-    --button-yellow: #FFD700;
-    --button-yellow-hover: #ccac00;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -122,7 +120,7 @@ h4 {
 .logo-text {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #0c0537;
+    color: #116dff;
     font-family: 'Inter', sans-serif;
     letter-spacing: -1px;
     line-height: 1;
@@ -131,7 +129,7 @@ h4 {
 .logo-sub {
     font-size: 1.5rem;
     font-weight: 400;
-    color: #0c0537;
+    color: #116dff;
     font-family: 'Inter', sans-serif;
     line-height: 1;
 }
@@ -142,7 +140,7 @@ h4 {
     left: 0;
     width: 100%;
     height: 3px;
-    background: #0c0537;
+    background: #116dff;
     border-radius: 2px;
     transition: var(--transition);
 }
@@ -224,7 +222,7 @@ h4 {
 
 .hero-tag {
     display: inline-block;
-    background: rgba(44, 122, 123, 0.1);
+    background: rgba(17, 109, 255, 0.1);
     color: var(--primary);
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -253,23 +251,23 @@ h4 {
 }
 
 .btn-primary {
-    background: var(--button-yellow);
-    color: var(--primary);
+    background: var(--primary);
+    color: white;
     padding: 1rem 2rem;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 600;
     transition: var(--transition);
     border: none;
     cursor: pointer;
     display: inline-block;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(17, 109, 255, 0.2);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    background: var(--button-yellow-hover);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    background: var(--primary-dark);
+    box-shadow: 0 8px 25px rgba(17, 109, 255, 0.3);
 }
 
 .btn-secondary {
@@ -278,14 +276,14 @@ h4 {
     padding: 1rem 2rem;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 700;
-    border: 2px solid var(--button-yellow);
+    font-weight: 600;
+    border: 2px solid var(--primary);
     transition: var(--transition);
 }
 
 .btn-secondary:hover {
-    background: var(--button-yellow);
-    color: var(--primary);
+    background: var(--primary);
+    color: white;
 }
 
 .hero-stats {
@@ -783,7 +781,7 @@ footer {
 
 .footer-logo .logo-icon {
     background: white;
-    color: #0c0537;
+    color: #116dff;
 }
 
 .footer-logo .logo-text,
@@ -1116,8 +1114,8 @@ footer {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
-    background: #ccac00;
-    color: var(--primary);
+    background: var(--gradient);
+    color: white;
 }
 
 .voice-assistant-trigger {
@@ -1137,7 +1135,6 @@ footer {
 
 .chatbot-trigger:hover {
     transform: scale(1.1) translateY(-5px);
-    background: #e6c200;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 
