@@ -106,7 +106,7 @@ osr-clinics/
 ## 🎨 Design Philosophy
 
 ### Color Palette
-- **Primary**: `#116dff` (Vibrant Blue)
+- **Primary**: `#0c0537` (Deep Navy)
 - **Accent**: `#38B2AC` (Bright teal)
 - **Text**: `#1A202C` (Dark charcoal)
 - **Background**: `#F7FAFC` (Soft gray)

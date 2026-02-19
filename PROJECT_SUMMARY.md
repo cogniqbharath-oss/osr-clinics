@@ -26,7 +26,7 @@ Simply open this URL in your web browser to view the website.
 - AI chatbot interface
 
 ### 2. **style.css** (Premium Styling)
-- Vibrant blue color scheme (#116dff primary)
+- Deep navy color scheme (#0c0537 primary)
 - Professional typography (Inter + Crimson Pro)
 - Smooth animations and transitions
 - Fully responsive design (mobile, tablet, desktop)
@@ -66,7 +66,7 @@ Simply open this URL in your web browser to view the website.
 
 ### Color Palette
 ```
-Primary:      #116dff (Vibrant Blue)
+Primary:      #0c0537 (Deep Navy)
 Accent:       #38B2AC (Bright Teal)
 Text Dark:    #1A202C (Charcoal)
 Text Light:   #4A5568 (Gray)
