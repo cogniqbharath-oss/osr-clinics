@@ -11,6 +11,8 @@
     --success: #48BB78;
     --warning: #df3131;
     --gradient: linear-gradient(135deg, #116dff 0%, #2f5dff 100%);
+    --button-yellow: #FFD700;
+    --button-yellow-hover: #ccac00;
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
@@ -251,23 +253,23 @@ h4 {
 }
 
 .btn-primary {
-    background: var(--primary);
-    color: white;
+    background: var(--button-yellow);
+    color: var(--primary);
     padding: 1rem 2rem;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     transition: var(--transition);
     border: none;
     cursor: pointer;
     display: inline-block;
-    box-shadow: 0 4px 15px rgba(17, 109, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    background: var(--primary-dark);
-    box-shadow: 0 8px 25px rgba(17, 109, 255, 0.3);
+    background: var(--button-yellow-hover);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
 }
 
 .btn-secondary {
@@ -276,14 +278,14 @@ h4 {
     padding: 1rem 2rem;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
-    border: 2px solid var(--primary);
+    font-weight: 700;
+    border: 2px solid var(--button-yellow);
     transition: var(--transition);
 }
 
 .btn-secondary:hover {
-    background: var(--primary);
-    color: white;
+    background: var(--button-yellow);
+    color: var(--primary);
 }
 
 .hero-stats {
@@ -1118,8 +1120,8 @@ footer {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
-    background: var(--gradient);
-    color: white;
+    background: var(--button-yellow-hover);
+    color: var(--primary);
 }
 
 .voice-assistant-trigger {
@@ -1139,6 +1141,7 @@ footer {
 
 .chatbot-trigger:hover {
     transform: scale(1.1) translateY(-5px);
+    background: var(--button-yellow);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
 }
 
